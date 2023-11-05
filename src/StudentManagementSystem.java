@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Student {
+class StudentData {
     private String name;
     private int rollNumber;
     private String grade;
 
-    public Student(String name, int rollNumber, String grade) {
+    public StudentData(String name, int rollNumber, String grade) {
         this.name = name;
         this.rollNumber = rollNumber;
         this.grade = grade;
@@ -34,14 +34,14 @@ class Student {
     }
 }
 
-class StudentManagementSystem {
-    private List<Student> students;
+class StudentData1 {
+    private List<StudentData> students;
 
-    public StudentManagementSystem() {
+    public StudentData1() {
         students = new ArrayList<>();
     }
 
-    public void addStudent(Student student) {
+    public void addStudent(StudentData student) {
         students.add(student);
     }
 
@@ -49,9 +49,9 @@ class StudentManagementSystem {
         students.removeIf(student -> student.getRollNumber() == rollNumber);
     }
 
-    public Student searchStudent(int rollNumber) {
-        for (Student student : students) {
-            if (student.getRollNumber() == rollNumber) {
+    public StudentData searchStudent(String name) {
+        for (StudentData student : students) {
+            if (student.getName().equals(name)) {
                 return student;
             }
         }
@@ -60,14 +60,14 @@ class StudentManagementSystem {
 
 
 
-    public List<Student> getAllStudents() {
+    public List<StudentData> getAllStudents() {
         return students;
     }
 
 
 }
 
-public class StudentManagement {
+public class StudentManagementSystem {
 
     public static void main(String[] args) {
 
@@ -83,14 +83,14 @@ public class StudentManagement {
         }
 
 
-        StudentManagementSystem sms = new StudentManagementSystem();
+        StudentData1 sms = new StudentData1();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
             System.out.println("\nStudent Management System");
             System.out.println("1. Add a student");
-            System.out.println("2. Remove a student");
-            System.out.println("3. Search for a student");
+            System.out.println("2. Search for a student");
+            System.out.println("3. Remove a student ");
             System.out.println("4. Display all students");
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
@@ -109,46 +109,45 @@ public class StudentManagement {
                     String grade = sc.nextLine();
 
                     if (name.isEmpty() || grade.isEmpty()) {
-                        System.out.println("Name and grade cannot be empty. Try again.");
+                        System.out.println("Name and grade must required. Try again.");
                     } else {
-                        Student student = new Student(name, rollNumber, grade);
+                        StudentData student = new StudentData(name, rollNumber, grade);
                         sms.addStudent(student);
+
                         System.out.println("Student added successfully.");
                     }
                     break;
 
-                case 2:
-                    System.out.print("Enter roll number of the student to remove: ");
+                    case 2:
+                        System.out.print("Enter the name to search");
+                        String nameToSearch = sc.nextLine();
+                        StudentData student = sms.searchStudent(nameToSearch);
+                        if (student != null) {
+                            System.out.println("Name: " + student.getName() + ", Roll Number: " + student.getRollNumber() + ", Grade: " + student.getGrade());
+                        } else {
+                            System.out.println("Student not found.");
+                        }
+                        break;
+
+                case 3:
+                    System.out.print("Enter roll number to remove: ");
                     int rollForRemove = sc.nextInt();
                     sc.nextLine();
                     sms.removeStudent(rollForRemove);
                     System.out.println("Student removed successfully.");
                     break;
 
-                case 3:
-                    System.out.print("Enter roll number to search for a student: ");
-                    int rollForSearch = sc.nextInt();
-                    sc.nextLine();
-                    Student foundStudent = sms.searchStudent(rollForSearch);
-                    if (foundStudent != null) {
-                        System.out.println("Student found: " + foundStudent);
-                    } else {
-                        System.out.println("Student not found.");
-                    }
-                    break;
-
                 case 4:
-                    List<Student> allStudents = sms.getAllStudents();
-                    System.out.println("All Students:");
-                    for (Student student : allStudents) {
-                        System.out.println(student);
+                    List<StudentData> allStudents = sms.getAllStudents();
+                    System.out.println(" Show all Students data:");
+                    for (StudentData allStudent : allStudents) {
+                        System.out.println(allStudent);
                     }
                     break;
 
                 case 5:
                     System.out.println("Exiting Student Management System.");
                     sc.close();
-                    System.exit(0);
                     break;
 
                 default:
